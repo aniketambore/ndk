@@ -8,7 +8,7 @@ class GetBudgetResponse extends NwcResponse {
   final int usedBudget; // msats
   final int totalBudget; // msats
   final int? renewsAt; // timestamp
-  final BudgetRenewalPeriod renewalPeriod;
+  final BudgetRenewalPeriod? renewalPeriod;
 
   int get userBudgetSats => usedBudget ~/ 1000;
 
@@ -19,7 +19,7 @@ class GetBudgetResponse extends NwcResponse {
     required this.usedBudget,
     required this.totalBudget,
     this.renewsAt,
-    required this.renewalPeriod,
+    this.renewalPeriod,
   });
 
   factory GetBudgetResponse.deserialize(Map<String, dynamic> input) {
@@ -34,8 +34,9 @@ class GetBudgetResponse extends NwcResponse {
       usedBudget: (result['used_budget'] as int?) ?? 0,
       totalBudget: (result['total_budget'] as int?) ?? 0,
       renewsAt: result['renews_at'],
-      renewalPeriod:
-          BudgetRenewalPeriod.fromPlaintext(result['renewal_period']),
+      renewalPeriod: result['renewal_period'] != null
+          ? BudgetRenewalPeriod.fromPlaintext(result['renewal_period'])
+          : null,
     );
   }
 }
