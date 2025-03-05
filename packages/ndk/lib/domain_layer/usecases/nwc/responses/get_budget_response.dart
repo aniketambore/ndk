@@ -14,12 +14,13 @@ class GetBudgetResponse extends NwcResponse {
 
   int get totalBudgetSats => totalBudget ~/ 1000;
 
-  GetBudgetResponse(
-      {required super.resultType,
-      required this.usedBudget,
-      required this.totalBudget,
-      this.renewsAt,
-      required this.renewalPeriod});
+  GetBudgetResponse({
+    required super.resultType,
+    required this.usedBudget,
+    required this.totalBudget,
+    this.renewsAt,
+    required this.renewalPeriod,
+  });
 
   factory GetBudgetResponse.deserialize(Map<String, dynamic> input) {
     if (!input.containsKey('result')) {
@@ -31,7 +32,7 @@ class GetBudgetResponse extends NwcResponse {
     return GetBudgetResponse(
       resultType: input['result_type'] as String,
       usedBudget: (result['used_budget'] as int?) ?? 0,
-      totalBudget: result['total_budget'],
+      totalBudget: (result['total_budget'] as int?) ?? 0,
       renewsAt: result['renews_at'],
       renewalPeriod:
           BudgetRenewalPeriod.fromPlaintext(result['renewal_period']),
